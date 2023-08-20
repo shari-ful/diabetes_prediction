@@ -1,11 +1,13 @@
+import os
 from fastapi import FastAPI
 from .schema import PredictSchema
 import pickle
 import numpy as np
 
 
-predict_model = 'prediction-model.pkl'
-classifier = pickle.load(open(predict_model, 'rb'))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(BASE_DIR, '..', 'prediction-model.pkl')
+CLASSIFIER = pickle.load(open(MODEL_DIR, 'rb'))
 
 
 app = FastAPI()
@@ -24,7 +26,7 @@ def predict_diabetes(schema: PredictSchema):
     data = np.array([[preg, glucose, bp, st, insulin, bmi, dpf, age]])
     
     try:
-        prediction = classifier.predict(data)
+        prediction = CLASSIFIER.predict_diabetes(data)
         return prediction
     except:
         raise ValueError
