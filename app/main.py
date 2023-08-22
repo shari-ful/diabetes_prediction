@@ -11,9 +11,11 @@ CLASSIFIER = pickle.load(open(MODEL_DIR, 'rb'))
 
 
 
-app = FastAPI()
+app = FastAPI(
+    title='Diabetes Prediction API',
+    description='Diabetes Prediction API')
 
-@app.post('/predict')
+@app.post('/predict', tags=['prediction'])
 async def predict_diabetes(schema: PredictSchema):
     preg = schema.preg
     glucose = schema.glucose
